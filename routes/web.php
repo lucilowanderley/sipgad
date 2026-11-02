@@ -11,6 +11,7 @@ use App\Http\Controllers\Ponto\BancoHorasController;
 use App\Http\Controllers\Ponto\EspelhoController;
 use App\Http\Controllers\Ponto\FechamentoController;
 use App\Http\Controllers\Ponto\PontoController;
+use App\Http\Controllers\Ponto\RelogioController;
 use App\Http\Controllers\Portal\AprovacaoController;
 use App\Http\Controllers\Portal\ComunicadoController;
 use App\Http\Controllers\Portal\DocumentoController;
@@ -91,6 +92,13 @@ Route::middleware('auth')->group(function () {
         Route::post('/banco-horas', [BancoHorasController::class, 'lancar'])->name('banco-horas.lancar');
         Route::get('/fechamentos', [FechamentoController::class, 'index'])->name('fechamentos.index');
         Route::post('/fechamentos', [FechamentoController::class, 'fechar'])->name('fechamentos.fechar');
+
+        // Relógios de ponto físicos (Dimep etc.) e importação de AFD
+        Route::resource('relogios', RelogioController::class)->except('destroy');
+        Route::post('/relogios/{relogio}/importar', [RelogioController::class, 'importar'])->name('relogios.importar')->middleware('throttle:20,1');
+        Route::post('/relogios/{relogio}/testar', [RelogioController::class, 'testar'])->name('relogios.testar')->middleware('throttle:20,1');
+        Route::post('/relogios/importacoes/{importacao}/reprocessar', [RelogioController::class, 'reprocessar'])->name('relogios.reprocessar');
+        Route::get('/relogios/importacoes/{importacao}/arquivo', [RelogioController::class, 'arquivo'])->name('relogios.arquivo');
     });
 
     Route::middleware('perfil:admin')->group(function () {

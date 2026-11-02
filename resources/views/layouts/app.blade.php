@@ -24,6 +24,7 @@
         <a href="{{ route('espelho') }}" @class(['ativo' => request()->routeIs('espelho')])>Espelho de ponto</a>
         <a href="{{ route('banco-horas.index') }}" @class(['ativo' => request()->routeIs('banco-horas.*')])>Banco de horas</a>
         @if($u->temPerfil('admin', 'dp'))
+            <a href="{{ route('relogios.index') }}" @class(['ativo' => request()->routeIs('relogios.*')])>Relógios de ponto</a>
             <a href="{{ route('fechamentos.index') }}" @class(['ativo' => request()->routeIs('fechamentos.*')])>Fechamento</a>
         @endif
 

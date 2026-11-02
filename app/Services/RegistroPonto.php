@@ -21,7 +21,11 @@ class RegistroPonto
 
     public function registrar(Colaborador $colaborador, CarbonInterface $dataHora, array $extra = []): Marcacao
     {
-        if (! $colaborador->ativo) {
+        // Batida vinda de relógio físico vale até a data de demissão, mesmo que o
+        // colaborador já esteja inativo quando o AFD é coletado.
+        $doRelogio = ($extra['origem'] ?? 'web') === 'relogio';
+        $antesDaDemissao = $colaborador->data_demissao && $dataHora->toDateString() <= $colaborador->data_demissao->toDateString();
+        if (! $colaborador->ativo && ! ($doRelogio && $antesDaDemissao)) {
             throw new DomainException('Colaborador inativo não pode registrar ponto.');
         }
         if (PeriodoFechamento::fechado($colaborador->empresa_id, $dataHora->toDateString())) {

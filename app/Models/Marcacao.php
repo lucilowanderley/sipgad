@@ -10,7 +10,7 @@ class Marcacao extends Model
     protected $table = 'marcacoes';
 
     protected $fillable = [
-        'empresa_id', 'colaborador_id', 'nsr', 'data_hora', 'origem', 'ip', 'user_agent', 'hash', 'motivo',
+        'empresa_id', 'colaborador_id', 'nsr', 'data_hora', 'origem', 'relogio_id', 'nsr_relogio', 'ip', 'user_agent', 'hash', 'motivo',
         'criado_por', 'desconsiderada_em', 'motivo_desconsideracao', 'desconsiderada_por',
     ];
 
@@ -38,4 +38,5 @@ class Marcacao extends Model
     public function colaborador() { return $this->belongsTo(Colaborador::class); }
     public function empresa() { return $this->belongsTo(Empresa::class); }
     public function autor() { return $this->belongsTo(User::class, 'criado_por'); }
+    public function relogio() { return $this->belongsTo(Relogio::class); }
 }

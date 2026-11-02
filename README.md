@@ -73,6 +73,16 @@ Troque a senha do administrador antes de usar com dados reais.
 - **Dossiê digital**: tipos de documento configuráveis (obrigatório, exige validade, quantos dias antes avisar, se o colaborador pode enviar). Upload pelo RH ou pelo colaborador (este fica "a conferir"). O envio mais recente de cada tipo é o vigente e os anteriores ficam no histórico. Painel de vencimentos com vencidos, a vencer, obrigatórios faltando e pendentes de conferência. Gestores não veem dossiês (LGPD).
 - **Mural de comunicados**: público por empresa e setor, categoria, fixar no topo, agendamento, data de expiração e confirmação de ciência. Contador de não lidos no menu e relatório de quem leu/deu ciência.
 
+## Relógios de ponto (Dimep e outros REP)
+
+Menu **Ponto → Relógios de ponto** (perfis admin e DP).
+- Cadastre o relógio (ex.: Dimep SMART 671 S, REP-C) com empresa, nº de fabricação, IP e porta.
+- **Importar AFD**: no relógio Dimep, grave o AFD no pendrive (F1 + 80 + E ou porta FISCAL) e envie o .txt. Lê os leiautes da Portaria 671 (tipos 3 e 7, por CPF) e da antiga Portaria 1510 (tipo 3, por PIS).
+- Cada NSR do relógio é importado uma única vez; reenviar o arquivo inteiro é seguro. As marcações entram com origem `relogio`, NSR próprio do SIPGAD e hash encadeado.
+- Marcações de CPF não cadastrado ou de competência fechada ficam como pendência; corrija e clique em **Reprocessar**. O arquivo original fica em `storage/app/private/afd`.
+- **Coleta automática**: informe uma pasta no cadastro; `php artisan relogios:coletar` (agendado a cada 5 min com `php artisan schedule:work`) importa todo AFD novo salvo nela.
+- **Testar conexão** verifica se o relógio responde no IP/porta e **Abrir página do relógio** abre o webservice embarcado do Dimep.
+
 ## Regras de cálculo
 
 Ficam em `app/Services/Apuracao.php`:
@@ -90,4 +100,4 @@ Usam SQLite em memória (extensão `pdo_sqlite` do PHP).
 
 ## Ainda não incluso
 
-Arquivos oficiais AFD/AEJ da Portaria 671/2021, assinatura eletrônica do espelho e dos avisos de férias, notificações por e-mail/WhatsApp, cálculo de valores de férias e app mobile/offline. Estão nas próximas fases do roadmap.
+Geração dos arquivos oficiais AFD/AEJ do próprio SIPGAD (Portaria 671/2021), coleta direta pela rede no protocolo do fabricante, assinatura eletrônica do espelho e dos avisos de férias, notificações por e-mail/WhatsApp, cálculo de valores de férias e app mobile/offline. Estão nas próximas fases do roadmap.
